@@ -1,0 +1,7 @@
+# config/cucumber.yml
+##YAML Template
+---
+chrome: SELENIUM_TARGET=Chrome
+firefox: SELENIUM_TARGET=Firefox
+bs: SELENIUM_TARGET=BrowserStack
+ie: SELENIUM_TARGET=IE

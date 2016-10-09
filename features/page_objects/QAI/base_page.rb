@@ -1,6 +1,27 @@
 module QAI
   class BasePage
 
+    def test_login
+      $browser.switch_to.alert.authenticate("httpwatch", "password") rescue Selenium::WebDriver::Error::NoSuchAlertError
+    end
+
+    def accept_pop_box
+      $browser.switch_to.alert.accept rescue Selenium::WebDriver::Error::NoSuchAlertError
+    end
+
+    def screenshot(filename)
+      $browser.save_screenshot("#{filename}.png")
+    end
+
+    def testmultisteps
+        navigate_to_url("http://www.google.com")
+        enter_text(:id, "lst-ib", "Browserstack")
+        sleep 5
+        check_web_page_title("Browserstack - Google Search")
+        click_hyperlink("BrowserStack")
+        check_web_page_title("Cross Browser Testing Tool. 1000+ Browsers, Mobile, Real IE.")
+    end
+
     #generic actions --------------------------------------------------------------------------
 
     def navigate_to_url(url)
@@ -13,7 +34,7 @@ module QAI
     end
 
     def scroll_to_element(css_selector, css_class_name)
-      header_element = $browser.find_elements(css_selector, css_class_name)
+      header_element = $browser.find_elements(css_selector, css_class_name).last
       header_element.location_once_scrolled_into_view
     end
 
@@ -29,6 +50,10 @@ module QAI
 
     def click_hyperlink(text)
       $browser.find_element(:link, text).click
+    end
+
+    def check_element_is_displayed(css_selector, css_class_name)
+        $wait.until { expect($browser.find_element(css_selector, css_class_name).displayed?).to eql true }
     end
 
     def check_element_is_not_displayed(css_selector, css_class_name)
